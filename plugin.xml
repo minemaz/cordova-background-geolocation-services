@@ -60,7 +60,11 @@
         <config-file target="*-Info.plist" parent="NSLocationAlwaysUsageDescription">
             <string>${EXECUTABLE_NAME} Would Like to Use Your Current Location Even In Background.</string>
         </config-file>
-        
+
+        <config-file target="*-Info.plist" parent="NSLocationAlwaysAndWhenInUseUsageDescription">
+            <string>${EXECUTABLE_NAME} Would Like to Use Your Current Location Even In Background.</string>
+        </config-file>
+
         <!-- Usage description of Motion, mandatory since iOS 10 -->
         <config-file target="*-Info.plist" parent="NSMotionUsageDescription">
             <string>${EXECUTABLE_NAME} Would Like to Use Motion Data.</string>
