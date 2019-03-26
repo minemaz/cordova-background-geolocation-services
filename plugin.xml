@@ -67,7 +67,7 @@
 
         <!-- Usage description of Motion, mandatory since iOS 10 -->
         <config-file target="*-Info.plist" parent="NSMotionUsageDescription">
-            <string>${EXECUTABLE_NAME} Would Like to Use Motion Data. Its used to shut off gps when you are still</string>
+            <string>${EXECUTABLE_NAME} Would Like to Use Motion Data. Its used to shut off gps when you are still.</string>
         </config-file>
         
         <config-file target="*-Info.plist" parent="UIBackgroundModes">
