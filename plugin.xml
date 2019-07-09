@@ -35,10 +35,10 @@
             <service android:name="com.flybuy.cordova.location.BackgroundLocationUpdateService" android:enabled="true"/>
         </config-file>
         
-        <edit-config file="AndroidManifest.xml" target="/manifest" mode="merge">
+        <config-file file="AndroidManifest.xml" target="/manifest">
             <manifest xmlns:tools="http://schemas.android.com/tools" />
             <application tools:replace="android:appComponentFactory" />
-        </edit-config>
+        </config-file>
 
         <config-file target="AndroidManifest.xml" parent="/manifest">
             <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
