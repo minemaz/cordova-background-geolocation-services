@@ -34,7 +34,7 @@
             <service android:name="com.flybuy.cordova.location.BackgroundLocationUpdateService" android:enabled="true"/>
         </config-file>
         
-    <config-file target="AndroidManifest.xml" parent="/manifest" mode="merge">
+    <config-file target="AndroidManifest.xml" parent="/*" mode="merge">
         <application tools:replace="android:appComponentFactory" />
     </config-file>
 
