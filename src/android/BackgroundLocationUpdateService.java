@@ -224,7 +224,7 @@ public class BackgroundLocationUpdateService
             setClickEvent(builder);
 
             Notification notification;
-            if (android.os.Build.VERSION.SDK_INT >= 16 && android.os.Build.VERSION.SDK_INT >= 26) {
+            if (android.os.Build.VERSION.SDK_INT >= 16 && android.os.Build.VERSION.SDK_INT < 26) {
                 notification = buildForegroundNotification(builder);
             } else {
                 //notification = buildForegroundNotificationCompat(builder);
