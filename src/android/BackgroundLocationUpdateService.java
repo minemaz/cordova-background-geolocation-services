@@ -272,7 +272,6 @@ public class BackgroundLocationUpdateService
 
 		NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
 		Notification notification = notificationBuilder.setOngoing(true)
-				.setSmallIcon(R.drawable.icon_1)
 				.setContentTitle("App is running in background")
 				.setPriority(NotificationManager.IMPORTANCE_MIN)
 				.setCategory(Notification.CATEGORY_SERVICE)
