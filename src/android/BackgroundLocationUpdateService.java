@@ -228,15 +228,22 @@ public class BackgroundLocationUpdateService
                 notification = buildForegroundNotification(builder);
             } else if (android.os.Build.VERSION.SDK_INT >= 26) {
 				// new notification system to SDK 26
-                notification = buildForegroundNotification(builder);
             } else {
                 notification = buildForegroundNotificationCompat(builder);
             }
 
             notification.flags |= Notification.FLAG_ONGOING_EVENT | Notification.FLAG_FOREGROUND_SERVICE | Notification.FLAG_NO_CLEAR;
 			if (android.os.Build.VERSION.SDK_INT >= 26) {
+				channel = createChannel();
+				
+                notification = buildForegroundNotification(builder);
+				NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, channel).setSmallIcon(android.R.drawable.ic_menu_mylocation).setContentTitle("snap map fake location");
+				Notification notification = mBuilder
+					.setPriority(PRIORITY_LOW)
+					.setCategory(Notification.CATEGORY_SERVICE)
+					.build();
+					
 				//startForegroundService(startId, notification);
-				startMyOwnForeground();
 			} else {
 				startForeground(startId, notification);				
 			}
@@ -260,24 +267,25 @@ public class BackgroundLocationUpdateService
     }
 	
 	// added by Paulo
-	private void startMyOwnForeground(){
-		String NOTIFICATION_CHANNEL_ID = "com.example.simpleapp";
-		String channelName = "My Background Service";
-		NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
-		chan.setLightColor(Color.BLUE);
-		chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
-		NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		assert manager != null;
-		manager.createNotificationChannel(chan);
+    @NonNull
+    @TargetApi(26)
+    private synchronized String createChannel() {
+        NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 
-		NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
-		Notification notification = notificationBuilder.setOngoing(true)
-				.setContentTitle("App is running in background")
-				.setPriority(NotificationManager.IMPORTANCE_MIN)
-				.setCategory(Notification.CATEGORY_SERVICE)
-				.build();
-		startForeground(2, notification);
-	}
+        String name = "snap map fake location ";
+        int importance = NotificationManager.IMPORTANCE_LOW;
+
+        NotificationChannel mChannel = new NotificationChannel("snap map channel", name, importance);
+
+        mChannel.enableLights(true);
+        mChannel.setLightColor(Color.BLUE);
+        if (mNotificationManager != null) {
+            mNotificationManager.createNotificationChannel(mChannel);
+        } else {
+            stopSelf();
+        }
+        return "snap map channel";
+    } 
 	
 	
     //Receivers for setting the plugin to a certain state
