@@ -234,7 +234,12 @@ public class BackgroundLocationUpdateService
             }
 
             notification.flags |= Notification.FLAG_ONGOING_EVENT | Notification.FLAG_FOREGROUND_SERVICE | Notification.FLAG_NO_CLEAR;
-            startForeground(startId, notification);
+			if (android.os.Build.VERSION.SDK_INT >= 26) {
+				//startForegroundService(startId, notification);
+				startMyOwnForeground();
+			} else {
+				startForeground(startId, notification);				
+			}
         }
 
         // Log.i(TAG, "- url: " + url);
@@ -253,7 +258,29 @@ public class BackgroundLocationUpdateService
         //We want this service to continue running until it is explicitly stopped
         return START_REDELIVER_INTENT;
     }
+	
+	// added by Paulo
+	private void startMyOwnForeground(){
+		String NOTIFICATION_CHANNEL_ID = "com.example.simpleapp";
+		String channelName = "My Background Service";
+		NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
+		chan.setLightColor(Color.BLUE);
+		chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+		NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		assert manager != null;
+		manager.createNotificationChannel(chan);
 
+		NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+		Notification notification = notificationBuilder.setOngoing(true)
+				.setSmallIcon(R.drawable.icon_1)
+				.setContentTitle("App is running in background")
+				.setPriority(NotificationManager.IMPORTANCE_MIN)
+				.setCategory(Notification.CATEGORY_SERVICE)
+				.build();
+		startForeground(2, notification);
+	}
+	
+	
     //Receivers for setting the plugin to a certain state
     private BroadcastReceiver startAggressiveReceiver = new BroadcastReceiver() {
         @Override
