@@ -226,9 +226,6 @@ public class BackgroundLocationUpdateService
 				Notification notification;
 				if (android.os.Build.VERSION.SDK_INT >= 16 && android.os.Build.VERSION.SDK_INT < 26) {
 					notification = buildForegroundNotification(builder);
-				} else if (android.os.Build.VERSION.SDK_INT >= 26) {
-					// new notification system to SDK 26
-					notification = buildForegroundNotification(builder);
 				} else {
 					notification = buildForegroundNotificationCompat(builder);
 				}
