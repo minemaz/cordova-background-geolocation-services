@@ -19,7 +19,6 @@ import android.telephony.CellLocation;
 
 import android.app.AlarmManager;
 import android.app.NotificationManager;
-import android.app.NotificationChannel;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -180,7 +179,7 @@ public class BackgroundLocationUpdateService
 
 			useActivityDetection = Boolean.parseBoolean(intent.getStringExtra("useActivityDetection"));
 
-			//if (android.os.Build.VERSION.SDK_INT < 26) {
+			if (android.os.Build.VERSION.SDK_INT < 26) {
 				// Build the notification / pending intent
 				Intent main = new Intent(this, BackgroundLocationServicesPlugin.class);
 				main.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
@@ -227,39 +226,13 @@ public class BackgroundLocationUpdateService
 				Notification notification;
 				if (android.os.Build.VERSION.SDK_INT >= 16 && android.os.Build.VERSION.SDK_INT < 26) {
 					notification = buildForegroundNotification(builder);
-				} else if (android.os.Build.VERSION.SDK_INT >= 26) {
-
-					String NOTIFICATION_CHANNEL_ID = "backposchannel";
-			    	String channelName = "My Background Service";
-			    	
-			    	NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-			    	assert manager != null;
-			    	
-			    	NotificationChannel chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, manager.IMPORTANCE_MIN);
-			    	// chan.setLightColor(Color.BLUE);
-			    	// chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
-			    	
-			    	manager.createNotificationChannel(chan);
-			    	
-			    	
-			    	Notification.Builder notificationBuilder = new Notification.Builder(this, NOTIFICATION_CHANNEL_ID);
-		    		notificationBuilder.setOngoing(true);
-		    		notificationBuilder.setContentTitle(notificationTitle);
-            		notificationBuilder.setContentText(notificationText);
-            		notificationBuilder.setSmallIcon(context.getApplicationInfo().icon);
-		            notificationBuilder.setPriority(manager.IMPORTANCE_MIN);
-		            
-		            if(scaledBm != null) {
-              			notificationBuilder.setLargeIcon(scaledBm);
-					}
-
 				} else {
 					notification = buildForegroundNotificationCompat(builder);
 				}
 
 				notification.flags |= Notification.FLAG_ONGOING_EVENT | Notification.FLAG_FOREGROUND_SERVICE | Notification.FLAG_NO_CLEAR;
 				startForeground(startId, notification);
-			//}
+			}
 		}
 
 		// Log.i(TAG, "- url: " + url);
