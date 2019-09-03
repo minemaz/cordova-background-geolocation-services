@@ -194,8 +194,8 @@ public class BackgroundLocationUpdateService
         notification.flags |= Notification.FLAG_ONGOING_EVENT | Notification.FLAG_FOREGROUND_SERVICE | Notification.FLAG_NO_CLEAR;
         return notification;
     }
-    //@TargetApi(Build.VERSION_CODES.O)
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    
+	@TargetApi(26)
     private Notification.Builder getNewNotificationBuilder() {
         NotificationChannel channel = new NotificationChannel(
                 "channel_id_1",
