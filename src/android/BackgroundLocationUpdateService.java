@@ -22,7 +22,6 @@ import android.app.NotificationManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 
-import android.os.Build.VERSION_CODES;
 
  
 import android.app.PendingIntent;
@@ -169,7 +168,7 @@ public class BackgroundLocationUpdateService
     private Notification getNotification() {
         Notification.Builder builder;
         Context context = getApplicationContext();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= 26) {
             builder = getNewNotificationBuilder();
         } else {
             builder = new Notification.Builder(context);
@@ -200,7 +199,7 @@ public class BackgroundLocationUpdateService
         return notification;
     }
     //@TargetApi(Build.VERSION_CODES.O)
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    @RequiresApi(api = 26)
     private Notification.Builder getNewNotificationBuilder() {
         NotificationChannel channel = new NotificationChannel(
                 "channel_id_1",
