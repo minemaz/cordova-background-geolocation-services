@@ -160,93 +160,77 @@ public class BackgroundLocationUpdateService
         criteria.setCostAllowed(true);
     }
 
+	
+	private Notification getNotification() {
+        Notification.Builder builder;
+        Context context = getApplicationContext();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            builder = getNewNotificationBuilder();
+        } else {
+            builder = new Notification.Builder(context);
+        }
+        builder.setContentTitle(notificationTitle);
+        builder.setContentText(notificationText);
+        builder.setSmallIcon(context.getApplicationInfo().icon);
+        Bitmap bm = BitmapFactory.decodeResource(context.getResources(),
+                context.getApplicationInfo().icon);
+        float mult = getImageFactor(getResources());
+        Bitmap scaledBm = Bitmap.createScaledBitmap(bm, (int)(bm.getWidth()*mult), (int)(bm.getHeight()*mult), false);
+        if(scaledBm != null) {
+            builder.setLargeIcon(scaledBm);
+        }
+        // Build the notification / pending intent
+        Intent main = new Intent(this, BackgroundLocationServicesPlugin.class);
+        main.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, main,  PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(pendingIntent);
+        setClickEvent(builder);
+        Notification notification;
+        if (Build.VERSION.SDK_INT >= 16) {
+            notification = buildForegroundNotification(builder);
+        } else {
+            notification = buildForegroundNotificationCompat(builder);
+        }
+        notification.flags |= Notification.FLAG_ONGOING_EVENT | Notification.FLAG_FOREGROUND_SERVICE | Notification.FLAG_NO_CLEAR;
+        return notification;
+    }
+    //@TargetApi(Build.VERSION_CODES.O)
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private Notification.Builder getNewNotificationBuilder() {
+        NotificationChannel channel = new NotificationChannel(
+                "channel_id_1",
+                "Notification Channel",
+                NotificationManager.IMPORTANCE_DEFAULT
+        );
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
+        Notification.Builder builder = new Notification.Builder(
+                getApplicationContext(),
+                "channel_id_1");
+        return builder;
+    }
+
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i(TAG, "Received start id " + startId + ": " + intent);
         if (intent != null) {
-
             distanceFilter = Integer.parseInt(intent.getStringExtra("distanceFilter"));
             desiredAccuracy = Integer.parseInt(intent.getStringExtra("desiredAccuracy"));
-
             interval             = Integer.parseInt(intent.getStringExtra("interval"));
             fastestInterval      = Integer.parseInt(intent.getStringExtra("fastestInterval"));
             aggressiveInterval   = Integer.parseInt(intent.getStringExtra("aggressiveInterval"));
             activitiesInterval   = Integer.parseInt(intent.getStringExtra("activitiesInterval"));
-
             isDebugging = Boolean.parseBoolean(intent.getStringExtra("isDebugging"));
             notificationTitle = intent.getStringExtra("notificationTitle");
             notificationText = intent.getStringExtra("notificationText");
-
             useActivityDetection = Boolean.parseBoolean(intent.getStringExtra("useActivityDetection"));
-
-
-            // Build the notification / pending intent
-            Intent main = new Intent(this, BackgroundLocationServicesPlugin.class);
-            main.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, main,  PendingIntent.FLAG_UPDATE_CURRENT);
-
-            Context context = getApplicationContext();
-
-            //Notification.Builder builder = new Notification.Builder(this);
-			Notification.Builder builder;
-            if (Build.VERSION.SDK_INT >= 26) {
-                builder = new Notification.Builder(context, "channel_id_1"); 
-            } else {
-                builder = new Notification.Builder(context);
-            }
-
-
-            builder.setContentTitle(notificationTitle);
-            builder.setContentText(notificationText);
-            builder.setSmallIcon(context.getApplicationInfo().icon);
-
-            Bitmap bm = BitmapFactory.decodeResource(context.getResources(),
-                                           context.getApplicationInfo().icon);
-
-            float mult = getImageFactor(getResources());
-            Bitmap scaledBm = Bitmap.createScaledBitmap(bm, (int)(bm.getWidth()*mult), (int)(bm.getHeight()*mult), false);
-
-            if(scaledBm != null) {
-              builder.setLargeIcon(scaledBm);
-            }
-
-            // Integer resId = getPluginResource("location_icon");
-            //
-            // //Scale our location_icon.png for different phone resolutions
-            // //TODO: Get this icon via a filepath from the user
-            // if(resId != 0) {
-            //     Bitmap bm = BitmapFactory.decodeResource(getResources(), resId);
-            //
-            //     float mult = getImageFactor(getResources());
-            //     Bitmap scaledBm = Bitmap.createScaledBitmap(bm, (int)(bm.getWidth()*mult), (int)(bm.getHeight()*mult), false);
-            //
-            //     if(scaledBm != null) {
-            //         builder.setLargeIcon(scaledBm);
-            //     }
-            // } else {
-            //     Log.w(TAG, "Could NOT find Resource for large icon");
-            // }
-
-            //Make clicking the event link back to the main cordova activity
-            builder.setContentIntent(pendingIntent);
-            setClickEvent(builder);
-
-            Notification notification;
-            if (android.os.Build.VERSION.SDK_INT >= 16) {
-                notification = buildForegroundNotification(builder);
-            } else {
-                notification = buildForegroundNotificationCompat(builder);
-            }
-
-            notification.flags |= Notification.FLAG_ONGOING_EVENT | Notification.FLAG_FOREGROUND_SERVICE | Notification.FLAG_NO_CLEAR;
-            startForeground(startId, notification);
+            startForeground(startId, getNotification());
         }
-
         // Log.i(TAG, "- url: " + url);
         // Log.i(TAG, "- params: "  + params.toString());
         Log.i(TAG, "- interval: "             + interval);
         Log.i(TAG, "- fastestInterval: "      + fastestInterval);
-
         Log.i(TAG, "- distanceFilter: "     + distanceFilter);
         Log.i(TAG, "- desiredAccuracy: "    + desiredAccuracy);
         Log.i(TAG, "- isDebugging: "        + isDebugging);
@@ -254,7 +238,6 @@ public class BackgroundLocationUpdateService
         Log.i(TAG, "- notificationText: "   + notificationText);
         Log.i(TAG, "- useActivityDetection: "   + useActivityDetection);
         Log.i(TAG, "- activityDetectionInterval: "   + activitiesInterval);
-
         //We want this service to continue running until it is explicitly stopped
         return START_REDELIVER_INTENT;
     }
