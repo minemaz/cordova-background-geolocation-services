@@ -76,7 +76,7 @@ import java.util.Set;
 
 import com.google.android.gms.common.ConnectionResult;
 
-import static android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION;
+import android.content.pm.ServiceInfo;
 
 //Detected Activities imports
 
@@ -236,7 +236,7 @@ public class BackgroundLocationUpdateService
 
             //startForeground(startId, getNotification());
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                startForeground(startId, getNotification(), FOREGROUND_SERVICE_TYPE_LOCATION);
+                startForeground(startId, getNotification(), ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION); (edited) 
             } else {
                 startForeground(startId, getNotification());
             }
