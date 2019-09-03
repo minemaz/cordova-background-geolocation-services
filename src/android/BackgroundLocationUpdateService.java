@@ -166,6 +166,10 @@ public class BackgroundLocationUpdateService
 
 	
     private Notification getNotification() {
+	
+		//Build.VERSION_CODES.JELLY_BEAN = 16
+		//Build.VERSION_CODES.O = 26
+
         Notification.Builder builder;
         Context context = getApplicationContext();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -190,7 +194,7 @@ public class BackgroundLocationUpdateService
         builder.setContentIntent(pendingIntent);
         setClickEvent(builder);
         Notification notification;
-        if (Build.VERSION.SDK_INT >= 16) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             notification = buildForegroundNotification(builder);
         } else {
             notification = buildForegroundNotificationCompat(builder);
