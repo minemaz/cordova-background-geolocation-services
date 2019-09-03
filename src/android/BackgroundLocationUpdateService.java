@@ -20,6 +20,8 @@ import android.telephony.CellLocation;
 import android.app.AlarmManager;
 import android.app.NotificationManager;
 import android.app.Notification;
+import android.app.NotificationChannel;
+ 
 import android.app.PendingIntent;
 import android.app.Service;
 import android.app.Activity;
@@ -162,8 +164,13 @@ public class BackgroundLocationUpdateService
 
 	
     private Notification getNotification() {
+        Notification.Builder builder;
         Context context = getApplicationContext();
-        Notification.Builder builder = new Notification.Builder(context);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            builder = getNewNotificationBuilder();
+        } else {
+            builder = new Notification.Builder(context);
+        }
         builder.setContentTitle(notificationTitle);
         builder.setContentText(notificationText);
         builder.setSmallIcon(context.getApplicationInfo().icon);
@@ -189,8 +196,21 @@ public class BackgroundLocationUpdateService
         notification.flags |= Notification.FLAG_ONGOING_EVENT | Notification.FLAG_FOREGROUND_SERVICE | Notification.FLAG_NO_CLEAR;
         return notification;
     }
-
-
+    //@TargetApi(Build.VERSION_CODES.O)
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private Notification.Builder getNewNotificationBuilder() {
+        NotificationChannel channel = new NotificationChannel(
+                "channel_id_1",
+                "Notification Channel",
+                NotificationManager.IMPORTANCE_DEFAULT
+        );
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
+        Notification.Builder builder = new Notification.Builder(
+                getApplicationContext(),
+                "channel_id_1");
+        return builder;
+    }
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i(TAG, "Received start id " + startId + ": " + intent);
@@ -205,10 +225,7 @@ public class BackgroundLocationUpdateService
             notificationTitle = intent.getStringExtra("notificationTitle");
             notificationText = intent.getStringExtra("notificationText");
             useActivityDetection = Boolean.parseBoolean(intent.getStringExtra("useActivityDetection"));
-            
-            if (Build.VERSION.SDK_INT <= 26) {
-                startForeground(startId, getNotification());
-            }
+            startForeground(startId, getNotification());
         }
         // Log.i(TAG, "- url: " + url);
         // Log.i(TAG, "- params: "  + params.toString());
