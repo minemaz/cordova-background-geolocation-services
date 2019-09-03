@@ -126,6 +126,8 @@ public class BackgroundLocationUpdateService
 
     private LocationRequest locationRequest;
 
+	public static final int FOREGROUND_SERVICE_TYPE_LOCATION = 8;
+
 
     @Override
     public IBinder onBind(Intent intent) {
