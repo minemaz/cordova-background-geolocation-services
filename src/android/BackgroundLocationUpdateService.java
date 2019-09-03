@@ -164,7 +164,7 @@ public class BackgroundLocationUpdateService
 	private Notification getNotification() {
         Notification.Builder builder;
         Context context = getApplicationContext();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= 26) {
             builder = getNewNotificationBuilder();
         } else {
             builder = new Notification.Builder(context);
