@@ -235,7 +235,7 @@ public class BackgroundLocationUpdateService
             useActivityDetection = Boolean.parseBoolean(intent.getStringExtra("useActivityDetection"));
 
             //startForeground(startId, getNotification());
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+			if (Build.VERSION.SDK_INT >= 29) {
                 startForeground(startId, getNotification(), ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION);
             } else {
                 startForeground(startId, getNotification());
