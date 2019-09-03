@@ -238,7 +238,7 @@ public class BackgroundLocationUpdateService
 
             //startForeground(startId, getNotification());
 			if (Build.VERSION.SDK_INT >= 29) {
-                startForeground(startId, getNotification(), ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION);
+                startForeground(startId, getNotification(), FOREGROUND_SERVICE_TYPE_LOCATION);
             } else {
                 startForeground(startId, getNotification());
             }
