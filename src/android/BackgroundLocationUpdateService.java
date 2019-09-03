@@ -231,7 +231,13 @@ public class BackgroundLocationUpdateService
             notificationTitle = intent.getStringExtra("notificationTitle");
             notificationText = intent.getStringExtra("notificationText");
             useActivityDetection = Boolean.parseBoolean(intent.getStringExtra("useActivityDetection"));
-            startForeground(startId, getNotification());
+
+            //startForeground(startId, getNotification());
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                startForeground(startId, getNotification(), FOREGROUND_SERVICE_TYPE_LOCATION);
+            } else {
+                startForeground(startId, getNotification());
+            }
         }
         // Log.i(TAG, "- url: " + url);
         // Log.i(TAG, "- params: "  + params.toString());
