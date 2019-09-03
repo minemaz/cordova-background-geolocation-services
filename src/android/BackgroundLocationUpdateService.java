@@ -76,6 +76,8 @@ import java.util.Set;
 
 import com.google.android.gms.common.ConnectionResult;
 
+import static android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION;
+
 //Detected Activities imports
 
 public class BackgroundLocationUpdateService
