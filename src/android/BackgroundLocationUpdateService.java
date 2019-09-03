@@ -76,7 +76,8 @@ import java.util.Set;
 
 import com.google.android.gms.common.ConnectionResult;
 
-import android.content.pm.ServiceInfo;
+//import android.content.pm.ServiceInfo;
+//import static android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION;
 
 //Detected Activities imports
 
@@ -126,7 +127,7 @@ public class BackgroundLocationUpdateService
 
     private LocationRequest locationRequest;
 
-	public static final int FOREGROUND_SERVICE_TYPE_LOCATION = 8;
+	//public static final int FOREGROUND_SERVICE_TYPE_LOCATION = 8;
 
 
     @Override
@@ -236,12 +237,12 @@ public class BackgroundLocationUpdateService
             notificationText = intent.getStringExtra("notificationText");
             useActivityDetection = Boolean.parseBoolean(intent.getStringExtra("useActivityDetection"));
 
-            //startForeground(startId, getNotification());
-			if (Build.VERSION.SDK_INT >= 29) {
+            startForeground(startId, getNotification());
+			/*if (Build.VERSION.SDK_INT >= 29) {
                 startForeground(startId, getNotification(), FOREGROUND_SERVICE_TYPE_LOCATION);
             } else {
                 startForeground(startId, getNotification());
-            }
+            }*/
         }
         // Log.i(TAG, "- url: " + url);
         // Log.i(TAG, "- params: "  + params.toString());
