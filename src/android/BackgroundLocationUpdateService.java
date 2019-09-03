@@ -161,14 +161,9 @@ public class BackgroundLocationUpdateService
     }
 
 	
-	private Notification getNotification() {
-        Notification.Builder builder;
+    private Notification getNotification() {
         Context context = getApplicationContext();
-        if (Build.VERSION.SDK_INT >= 26) {
-            builder = getNewNotificationBuilder();
-        } else {
-            builder = new Notification.Builder(context);
-        }
+        Notification.Builder builder = new Notification.Builder(context);
         builder.setContentTitle(notificationTitle);
         builder.setContentText(notificationText);
         builder.setSmallIcon(context.getApplicationInfo().icon);
@@ -194,21 +189,6 @@ public class BackgroundLocationUpdateService
         notification.flags |= Notification.FLAG_ONGOING_EVENT | Notification.FLAG_FOREGROUND_SERVICE | Notification.FLAG_NO_CLEAR;
         return notification;
     }
-    
-	@TargetApi(26)
-    private Notification.Builder getNewNotificationBuilder() {
-        NotificationChannel channel = new NotificationChannel(
-                "channel_id_1",
-                "Notification Channel",
-                NotificationManager.IMPORTANCE_DEFAULT
-        );
-        NotificationManager notificationManager = getSystemService(NotificationManager.class);
-        notificationManager.createNotificationChannel(channel);
-        Notification.Builder builder = new Notification.Builder(
-                getApplicationContext(),
-                "channel_id_1");
-        return builder;
-    }
 
 
     @Override
@@ -225,7 +205,10 @@ public class BackgroundLocationUpdateService
             notificationTitle = intent.getStringExtra("notificationTitle");
             notificationText = intent.getStringExtra("notificationText");
             useActivityDetection = Boolean.parseBoolean(intent.getStringExtra("useActivityDetection"));
-            startForeground(startId, getNotification());
+            
+            if (Build.VERSION.SDK_INT <= 26) {
+                startForeground(startId, getNotification());
+            }
         }
         // Log.i(TAG, "- url: " + url);
         // Log.i(TAG, "- params: "  + params.toString());
