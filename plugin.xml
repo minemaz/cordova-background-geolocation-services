@@ -68,22 +68,6 @@
             <string>${EXECUTABLE_NAME} Would Like to Use Your Current Location Even In Background. This allows ${EXECUTABLE_NAME} to calculate your initial ETA and proactively notify you if it looks like you are going to miss it.  It also eliminates the need for those pesky load status phone calls.</string>
         </config-file>
 		
-	<preference name="MY_CUSTOM_MESSAGE_TO_USE_LOCATION" default="Would Like to Use Your Current Location Even In Background." />
-        <config-file target="*-Info.plist" parent="NSLocationAlwaysAndWhenInUseUsageDescription">
-            <string>$MY_CUSTOM_MESSAGE_TO_USE_LOCATION</string>
-        </config-file>
-		
-		
-	<preference name="MY_CUSTOM_MESSAGE_TO_USE_LOCATION" default="Would Like to Use Your Current Location Even In Background." />
-        <config-file target="*-Info.plist" parent="NSLocationUsageDescription">
-            <string>$MY_CUSTOM_MESSAGE_TO_USE_LOCATION</string>
-        </config-file>
-		
-	<preference name="MY_CUSTOM_MESSAGE_TO_USE_LOCATION" default="Would Like to Use Your Current Location Even In Background." />
-        <config-file target="*-Info.plist" parent="NSLocationWhenInUseUsageDescription">
-            <string>$MY_CUSTOM_MESSAGE_TO_USE_LOCATION</string>
-        </config-file>
-		
 		
 
         <!-- Usage description of Motion, mandatory since iOS 10 -->
