@@ -75,7 +75,7 @@
 
         
         <config-file target="*-Info.plist" parent="NSLocationAlwaysUsageDescription">
-            <string>${EXECUTABLE_NAME} Would Like to Use Your Current Location Even In Background. This allows ${EXECUTABLE_NAME} to calculate your initial ETA and proactively notify you if it looks like you are going to miss it.  It also eliminates the need for those pesky load status phone calls.</string>
+            <string>${EXECUTABLE_NAME} WWould Like to Use Your Current Location Even In Background. This allows ${EXECUTABLE_NAME} to calculate your initial ETA and proactively notify you if it looks like you are going to miss it.  It also eliminates the need for those pesky load status phone calls.</string>
         </config-file>
 		
               
@@ -89,11 +89,6 @@
         <preference name="CUSTOM_LOCATION_ALWAYS_AND_WHEN_UN_USAGE" default="Can we continue to use your location?" />
         <config-file target="*-Info.plist" parent="NSLocationAlwaysAndWhenInUseUsageDescription">
             <string>$CUSTOM_LOCATION_ALWAYS_AND_WHEN_UN_USAGE</string>
-        </config-file>
-		
-        <preference name="CUSTOM_LOCATION_USAGE_DESCRIPTION" default="Woulddd Like to Use Your Current Location Even In Background." />
-        <config-file target="*-Info.plist" parent="NSLocationUsageDescription">
-            <string>$CUSTOM_LOCATION_USAGE_DESCRIPTION</string>
         </config-file>
 		
 		
