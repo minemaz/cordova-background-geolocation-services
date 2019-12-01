@@ -78,17 +78,19 @@
             <string>${EXECUTABLE_NAME} Would Like to Use Your Current Location Even In Background. This allows ${EXECUTABLE_NAME} to calculate your initial ETA and proactively notify you if it looks like you are going to miss it.  It also eliminates the need for those pesky load status phone calls.</string>
         </config-file>
 		
-        <preference name="CustomMsg_LocationAlwaysAndWhenInUseUsageDescription" default="3Would Like to Use Your Current Location Even In Background.3333" />
+        <!-- message when we go to background -->
+        <preference name="CustomMsg_LocationAlwaysAndWhenInUseUsageDescription" default="Can we continue to use your location?" />
         <config-file target="*-Info.plist" parent="NSLocationAlwaysAndWhenInUseUsageDescription">
             <string>$CustomMsg_LocationAlwaysAndWhenInUseUsageDescription</string>
         </config-file>
 		
-        <preference name="CustomMsg_LocationUsageDescription" default="1Would Like to Use Your Current Location Even In Background.111" />
+        <preference name="CustomMsg_LocationUsageDescription" default="Woulddd Like to Use Your Current Location Even In Background.111" />
         <config-file target="*-Info.plist" parent="NSLocationUsageDescription">
             <string>$CustomMsg_LocationUsageDescription</string>
         </config-file>
-		
-        <preference name="CustomMsg_LocationWhenInUseUsageDescription" default="2Would Like to Use Your Current Location Even In Background.222" />
+		      
+        <!-- message when we request the first time -->
+        <preference name="CustomMsg_LocationWhenInUseUsageDescription" default="Would Like to Use Your Current Location Even In Background." />
         <config-file target="*-Info.plist" parent="NSLocationWhenInUseUsageDescription">
             <string>$CustomMsg_LocationWhenInUseUsageDescription</string>
         </config-file>
