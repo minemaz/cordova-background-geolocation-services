@@ -94,6 +94,11 @@
             <string>$CUSTOM_LOCATION_ALWAYS_AND_WHEN_UN_USAGE</string>
         </config-file>
 		
+        
+        <preference name="CUSTOM_BLUETOOTH_REQUEST" default="We would like to use your bluetooth for tracking location reasons."/>
+        <config-file target="*-Info.plist" parent="NSBluetoothAlwaysUsageDescription">
+            <string>$CUSTOM_BLUETOOTH_REQUEST</string>
+        </config-file>
 		
 
         <!-- Usage description of Motion, mandatory since iOS 10 -->
