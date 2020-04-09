@@ -3,8 +3,8 @@ var child_process = require('child_process'),
     path = require('path');
 
 module.exports = function(context) {
-    var IOS_DEPLOYMENT_TARGET = '11.0',
-        SWIFT_VERSION = '5.0',
+    var IOS_DEPLOYMENT_TARGET = '11.4',
+        SWIFT_VERSION = '4.2',
         COMMENT_KEY = /_comment$/,
         CORDOVA_VERSION = process.env.CORDOVA_VERSION;
 
@@ -81,6 +81,8 @@ module.exports = function(context) {
 
             for (config in configurations) {
                 buildSettings = configurations[config].buildSettings;
+                buildSettings['IPHONEOS_DEPLOYMENT_TARGET'] = IOS_DEPLOYMENT_TARGET;
+                buildSettings['SWIFT_VERSION'] = SWIFT_VERSION;
                 buildSettings['EMBEDDED_CONTENT_CONTAINS_SWIFT'] = "YES";
                 buildSettings['LD_RUNPATH_SEARCH_PATHS'] = '"@executable_path/Frameworks"';
             }
