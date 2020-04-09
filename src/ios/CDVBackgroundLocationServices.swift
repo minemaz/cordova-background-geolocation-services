@@ -12,7 +12,7 @@ import CoreMotion
 
 
 let TAG = "[LocationServices]";
-let PLUGIN_VERSION = "1.0";
+let PLUGIN_VERSION = "3.0";
 
 func log(message: String){
     if(debug == true) {
