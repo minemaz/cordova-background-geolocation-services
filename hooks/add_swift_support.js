@@ -3,8 +3,8 @@ var child_process = require('child_process'),
     path = require('path');
 
 module.exports = function(context) {
-    var IOS_DEPLOYMENT_TARGET = '8.0',
-        SWIFT_VERSION = '4.0',
+    var IOS_DEPLOYMENT_TARGET = '11.0',
+        SWIFT_VERSION = '5.0',
         COMMENT_KEY = /_comment$/,
         CORDOVA_VERSION = process.env.CORDOVA_VERSION;
 
