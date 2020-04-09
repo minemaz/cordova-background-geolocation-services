@@ -81,8 +81,6 @@ module.exports = function(context) {
 
             for (config in configurations) {
                 buildSettings = configurations[config].buildSettings;
-                buildSettings['IPHONEOS_DEPLOYMENT_TARGET'] = IOS_DEPLOYMENT_TARGET;
-                buildSettings['SWIFT_VERSION'] = SWIFT_VERSION;
                 buildSettings['EMBEDDED_CONTENT_CONTAINS_SWIFT'] = "YES";
                 buildSettings['LD_RUNPATH_SEARCH_PATHS'] = '"@executable_path/Frameworks"';
             }
