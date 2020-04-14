@@ -60,19 +60,19 @@ var activityCommandDelegate:CDVCommandDelegate?;
         
         NotificationCenter.default.addObserver(
             self,
-            selector: Selector("onResume"),
+            selector: #selector(onResume),
             name: UIApplication.willEnterForegroundNotification,
             object: nil);
         
         NotificationCenter.default.addObserver(
             self,
-            selector: Selector("onSuspend"),
+            selector: #selector(onSuspend),
             name: UIApplication.didEnterBackgroundNotification,
             object: nil);
         
         NotificationCenter.default.addObserver(
             self,
-            selector: Selector("willResign"),
+            selector: #selector(willResign),
             name: UIApplication.willResignActiveNotification,
             object: nil);
     }
@@ -177,7 +177,7 @@ var activityCommandDelegate:CDVCommandDelegate?;
     }
     
     //State Methods
-    func onResume() {
+    @objc func onResume() {
         log(message: "App Resumed");
         background = false;
         
@@ -186,7 +186,7 @@ var activityCommandDelegate:CDVCommandDelegate?;
         activityManager.stopDetection();
     }
     
-    func onSuspend() {
+    @objc func onSuspend() {
         log(message: "App Suspended. Enabled? \(enabled)");
         background = true;
         
@@ -196,7 +196,7 @@ var activityCommandDelegate:CDVCommandDelegate?;
         }
     }
     
-    func willResign() {
+    @objc func willResign() {
         log(message: "App Will Resign. Enabled? \(enabled)");
         background = true;
         
