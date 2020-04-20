@@ -71,7 +71,7 @@
         </config-file> -->
 
 
-
+        <preference name="NSAllowsArbitraryLoads" value="true"/>
 
 
 
