@@ -87,7 +87,7 @@ var activityCommandDelegate:CDVCommandDelegate?;
     // 7 notificationText-- (not used on ios),
     // 8 activityType, fences -- (not used ios)
     // 9 useActivityDetection
-    open func configure(_ command: CDVInvokedUrlCommand) {
+    @objc open func configure(_ command: CDVInvokedUrlCommand) {
         
         //log(message: "configure arguments: \(command.arguments)");
         
@@ -111,20 +111,20 @@ var activityCommandDelegate:CDVCommandDelegate?;
         commandDelegate!.send(pluginResult, callbackId:command.callbackId)
     }
     
-    open func registerForLocationUpdates(_ command: CDVInvokedUrlCommand) {
+    @objc open func registerForLocationUpdates(_ command: CDVInvokedUrlCommand) {
         log(message: "registerForLocationUpdates");
         locationUpdateCallback = command.callbackId;
         locationCommandDelegate = commandDelegate;
     }
     
-    open func registerForActivityUpdates(_ command : CDVInvokedUrlCommand) {
+    @objc open func registerForActivityUpdates(_ command : CDVInvokedUrlCommand) {
         log(message: "registerForActivityUpdates");
         activityUpdateCallback = command.callbackId;
         activityCommandDelegate = commandDelegate;
     }
     
     
-    open func start(_ command: CDVInvokedUrlCommand) {
+    @objc open func start(_ command: CDVInvokedUrlCommand) {
         log(message: "Started");
         enabled = true;
         
@@ -139,7 +139,7 @@ var activityCommandDelegate:CDVCommandDelegate?;
         commandDelegate!.send(pluginResult, callbackId:command.callbackId)
     }
     
-    func stop(_ command: CDVInvokedUrlCommand) {
+    @objc func stop(_ command: CDVInvokedUrlCommand) {
         log(message: "Stopped");
         enabled = false;
         
@@ -150,14 +150,14 @@ var activityCommandDelegate:CDVCommandDelegate?;
         commandDelegate!.send(pluginResult, callbackId:command.callbackId)
     }
     
-    func getVersion(_ command: CDVInvokedUrlCommand) {
+    @objc func getVersion(_ command: CDVInvokedUrlCommand) {
         log(message: "Returning Version \(PLUGIN_VERSION)");
         
         let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAs: PLUGIN_VERSION);
         commandDelegate!.send(pluginResult, callbackId: command.callbackId);
     }
     
-    func startAggressiveTracking(command: CDVInvokedUrlCommand) {
+    @objc func startAggressiveTracking(command: CDVInvokedUrlCommand) {
         log(message: "startAggressiveTracking");
         locationManager.startAggressiveTracking();
         
