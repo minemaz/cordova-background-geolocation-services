@@ -61,19 +61,19 @@ var activityCommandDelegate:CDVCommandDelegate?;
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(onResume),
-            name: UIApplication.willEnterForegroundNotification,
+            name: NSNotification.Name.UIApplicationWillEnterForeground,
             object: nil);
         
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(onSuspend),
-            name: UIApplication.didEnterBackgroundNotification,
+            name: NSNotification.Name.UIApplicationDidEnterBackground,
             object: nil);
         
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(willResign),
-            name: UIApplication.willResignActiveNotification,
+            name: NSNotification.Name.UIApplicationWillResignActive,
             object: nil);
     }
     
@@ -644,20 +644,20 @@ class TaskManager : NSObject {
     //let priority = DispatchQueue.GlobalAttributes.qosUserInitiated;
     
     var _bgTaskList = [UIBackgroundTaskIdentifier]();
-    var _masterTaskId = UIBackgroundTaskIdentifier.invalid;
+    var _masterTaskId = UIBackgroundTaskInvalid;
     
     func beginNewBackgroundTask() -> UIBackgroundTaskIdentifier {
         //log(message: "beginNewBackgroundTask called");
         
         let app = UIApplication.shared;
         
-        var bgTaskId = UIBackgroundTaskIdentifier.invalid;
+        var bgTaskId = UIBackgroundTaskInvalid;
         
         if(app.responds(to: Selector(("beginBackgroundTask")))) {
             bgTaskId = app.beginBackgroundTask(expirationHandler: {
                 log(message: "Background task \(bgTaskId) expired");
             });
-            if(self._masterTaskId == UIBackgroundTaskIdentifier.invalid) {
+            if(self._masterTaskId == UIBackgroundTaskInvalid) {
                 self._masterTaskId = bgTaskId;
                 log(message: "Started Master Task ID \(self._masterTaskId)");
             } else {
@@ -697,7 +697,7 @@ class TaskManager : NSObject {
             if(all) {
                 log(message: "Killing Master Task \(self._masterTaskId)");
                 app.endBackgroundTask(self._masterTaskId);
-                self._masterTaskId = UIBackgroundTaskIdentifier.invalid;
+                self._masterTaskId = UIBackgroundTaskInvalid;
             } else {
                 log(message: "Kept Master Task ID \(self._masterTaskId)");
             }
