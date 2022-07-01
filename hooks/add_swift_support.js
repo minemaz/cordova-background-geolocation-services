@@ -11,7 +11,12 @@ module.exports = function(context) {
     run();
 
     function run() {
-        var cordova_util = context.requireCordovaModule('cordova-lib/src/cordova/util'),
+      CORDOVA_VERSION = 10.0;
+            const glob = require('glob');
+            const xcode = require('xcode');
+            const fs = require('fs');
+
+         var cordova_util = context.requireCordovaModule('cordova-lib/src/cordova/util'),
             ConfigParser = CORDOVA_VERSION >= 6.0
               ? context.requireCordovaModule('cordova-common').ConfigParser
               : context.requireCordovaModule('cordova-lib/src/configparser/ConfigParser'),
@@ -34,7 +39,7 @@ module.exports = function(context) {
               : context.requireCordovaModule('cordova-lib/src/plugman/platforms/ios')
 
             projectFile = platform_ios.parseProjectFile(iosPlatformPath);
-        } else {
+        } else if (CORDOVA_VERSION < 9.0) {
             var project_files = context.requireCordovaModule('glob').sync(path.join(iosPlatformPath, '*.xcodeproj', 'project.pbxproj'));
             if (project_files.length === 0) {
                 throw new Error('Can\'t found xcode project file');
@@ -58,6 +63,35 @@ module.exports = function(context) {
 
                     fs.writeFileSync(pbxPath, xcodeproj.writeSync());
                     fs.writeFileSync(frameworks_file, JSON.stringify(this.frameworks, null, 4));
+                }
+            };
+        } else { /* CORDOVA_VERSION >= 9.0 */
+           var project_files = glob.sync(path.join(iosPlatformPath, '*.xcodeproj', 'project.pbxproj'));
+            if (project_files.length === 0) {
+                throw new Error('Can\'t found xcode project file');
+            }
+
+            var pbxPath = project_files[0];
+            var xcodeproj = xcode.project(pbxPath);
+            xcodeproj.parseSync();
+
+            projectFile = {
+                'xcode': xcodeproj,
+                write: function () {
+                    //var fs = ule('fs');
+                    var frameworks_file = path.join(iosPlatformPath, 'frameworks.json');
+                    var frameworks = {};
+                    try {
+                      require(frameworks_file, (req) => {
+                        frameworks = require(req);
+                        console.log(JSON.stringify(frameworks));
+                        fs.writeFileSync(pbxPath, xcodeproj.writeSync());
+                        fs.writeFileSync(frameworks_file, JSON.stringify(this.frameworks, null, 4));
+                      } );
+                    } catch(e) {
+                      console.error(e);
+                    }
+
                 }
             };
         }
